@@ -1,0 +1,19 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+
+- clean: ['~']
+
+- link:
+    ~/.tmux.conf: tmux/tmux.conf
+    ~/.wezterm.lua: wezterm/wezterm.lua
+
+    # Option A (recommended): link the whole config directories
+    ~/.config/kitty: kitty
+    ~/.config/nvim: nvim
+    ~/.config/karabiner: karabiner
+
+    # Starship is a single file in ~/.config
+    ~/.config/starship.toml: starship/starship.toml
+
