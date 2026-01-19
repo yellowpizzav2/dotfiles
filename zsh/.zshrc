@@ -19,4 +19,5 @@ export PATH="$HOME/.opencode/bin:$PATH"
 # 1pass GH plugins
 source "$HOME/.config/op/plugins.sh"
 
+# attach to tmux or create
 test -z "$TMUX" && (tmux attach || tmux new-session)
