@@ -9,6 +9,8 @@
     ~/.tmux.conf: tmux/tmux.conf
     ~/.wezterm.lua: wezterm/wezterm.lua
 
+    ~/.zshrc: zsh/.zshrc
+  
     # Option A (recommended): link the whole config directories
     ~/.config/kitty: kitty
     ~/.config/nvim: nvim
