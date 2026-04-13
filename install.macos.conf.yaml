@@ -5,4 +5,5 @@
 
 - link:
     ~/.zshrc: zsh/.zshrc.macos
+    ~/.wezterm.lua: wezterm/wezterm.lua
     ~/.config/karabiner: karabiner
