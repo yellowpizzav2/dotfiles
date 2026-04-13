@@ -1,0 +1,8 @@
+- defaults:
+    shell:
+      stderr: true
+      stdout: true
+
+- shell:
+    - command: bash scripts/install_tmux_plugins.sh
+      description: "Install tmux TPM and plugins"

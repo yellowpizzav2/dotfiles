@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+command -v tmux >/dev/null 2>&1 || { echo "tmux not found"; exit 1; }
+command -v git >/dev/null 2>&1 || { echo "git not found"; exit 1; }
+[ -f "$HOME/.tmux.conf" ] || { echo "~/.tmux.conf missing"; exit 1; }
+
+export TMUX_PLUGIN_MANAGER_PATH="$HOME/.tmux/plugins"
+mkdir -p "$TMUX_PLUGIN_MANAGER_PATH"
+
+if [ ! -d "$TMUX_PLUGIN_MANAGER_PATH/tpm" ]; then
+  GIT_TERMINAL_PROMPT=0 git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_MANAGER_PATH/tpm"
+fi
+
+# Ensure a tmux server is running with your config loaded.
+created_tmp_session=0
+if tmux list-sessions >/dev/null 2>&1; then
+  tmux source-file "$HOME/.tmux.conf"
+else
+  tmux -f "$HOME/.tmux.conf" new-session -d -s __dotbot_tpm__
+  created_tmp_session=1
+fi
+
+# Retry plugin installs because GitHub occasionally 5xx's.
+tries=0
+until "$TMUX_PLUGIN_MANAGER_PATH/tpm/bin/install_plugins"; do
+  tries=$((tries + 1))
+  if [ "$tries" -ge 3 ]; then
+    echo "TPM plugin install failed after 3 attempts"
+    exit 1
+  fi
+  sleep 2
+done
+
+# Sanity check: catppuccin/tmux clones into ~/.tmux/plugins/tmux.
+[ -d "$TMUX_PLUGIN_MANAGER_PATH/tmux" ] || { echo "catppuccin/tmux not installed (expected ~/.tmux/plugins/tmux)"; exit 1; }
+
+if [ "$created_tmp_session" -eq 1 ]; then
+  tmux kill-session -t __dotbot_tpm__ >/dev/null 2>&1 || true
+  tmux kill-server >/dev/null 2>&1 || true
+fi

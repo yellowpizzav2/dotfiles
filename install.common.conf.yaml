@@ -1,0 +1,14 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+
+- clean: ['~']
+
+- link:
+    ~/.tmux.conf: tmux/tmux.conf
+    ~/.wezterm.lua: wezterm/wezterm.lua
+  
+    ~/.config/kitty: kitty
+    ~/.config/nvim: nvim
+    ~/.config/starship.toml: starship/starship.toml

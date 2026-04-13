@@ -1,0 +1,35 @@
+if [ -r /usr/share/cachyos-zsh-config/cachyos-config.zsh ]; then
+  source /usr/share/cachyos-zsh-config/cachyos-config.zsh
+fi
+
+if [ -f "$HOME/.local/bin/env" ]; then
+  . "$HOME/.local/bin/env"
+fi
+
+if [ -d "$HOME/.lmstudio/bin" ]; then
+  export PATH="$PATH:$HOME/.lmstudio/bin"
+fi
+
+export PATH="$HOME/.local/bin:$PATH"
+
+if [ -d "$HOME/.antigravity/antigravity/bin" ]; then
+  export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+fi
+
+if command -v thefuck >/dev/null 2>&1; then
+  eval "$(thefuck --alias)"
+fi
+
+export PATH="$HOME/.opencode/bin:$PATH"
+
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
+if [ -f "$HOME/.config/op/plugins.sh" ]; then
+  source "$HOME/.config/op/plugins.sh"
+fi
+
+if [ -z "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
+  tmux attach || tmux new-session
+fi

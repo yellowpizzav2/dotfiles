@@ -1,15 +1,36 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-CONFIG="install.conf.yaml"
 DOTBOT_DIR="dotbot"
-
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+case "$(uname -s)" in
+  Darwin)
+    CONFIGS=(
+      "install.common.conf.yaml"
+      "install.macos.conf.yaml"
+      "install.post.conf.yaml"
+    )
+    ;;
+  Linux)
+    CONFIGS=(
+      "install.common.conf.yaml"
+      "install.linux.conf.yaml"
+      "install.post.conf.yaml"
+    )
+    ;;
+  *)
+    echo "Unsupported operating system: $(uname -s)" >&2
+    exit 1
+    ;;
+esac
 
 cd "${BASEDIR}"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+for config in "${CONFIGS[@]}"; do
+  "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${config}" "${@}"
+done
