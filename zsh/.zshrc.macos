@@ -21,7 +21,3 @@ fi
 if [ -f "$HOME/.config/op/plugins.sh" ]; then
   source "$HOME/.config/op/plugins.sh"
 fi
-
-if [ -z "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
-  tmux attach || tmux new-session
-fi

@@ -6,3 +6,6 @@
 - link:
     ~/.zshrc: zsh/.zshrc.linux
     ~/.config/fish/config.fish: fish/config.fish
+    ~/.config/alacritty/alacritty.toml:
+      path: alacritty/alacritty.toml
+      backup: true

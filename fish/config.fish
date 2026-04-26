@@ -26,8 +26,4 @@ if status is-interactive
     if type -q thefuck
         thefuck --alias | source
     end
-
-    if type -q tmux; and test -z "$TMUX"
-        tmux attach; or tmux new-session
-    end
 end
